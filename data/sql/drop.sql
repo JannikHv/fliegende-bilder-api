@@ -1,0 +1,2 @@
+DROP TABLE IF EXISTS `sights`;
+DROP TABLE IF EXISTS `images`;
