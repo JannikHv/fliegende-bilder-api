@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
 
-const { getGeoDistance } = require('src/utils');
+const { getGeoDistance, fetchBase64 } = require('src/utils');
 
 const {
   PORT,
@@ -32,7 +32,9 @@ app.use(cors());
 app.get('/sights', async (req, res) => {
   const { lat, long, radius } = req.query;
 
-  let sights = await db.select('*').from('sights')
+  let sights = await db
+    .select('*')
+    .from('sights')
     .catch(() => []);
 
   /** Filter by radius if requested */
@@ -46,8 +48,17 @@ app.get('/sights', async (req, res) => {
 app.get('/sights/:id/images', async (req, res) => {
   const { id } = req.params;
 
-  const images = await db.select('*').from('images').where({ sight_id: id })
+  const images = await db
+    .select('*')
+    .from('images')
+    .where({ sight_id: id })
     .catch(() => []);
+
+  await Promise.all(images.map(async (image) => {
+    const base64 = await fetchBase64(image.url).catch(console.error);
+
+    image.base64 = (base64) ? base64.pop() : null;
+  }));
 
   return res.json(images);
 });
