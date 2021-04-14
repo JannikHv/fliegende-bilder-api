@@ -55,9 +55,7 @@ app.get('/sights/:id/images', async (req, res) => {
     .catch(() => []);
 
   await Promise.all(images.map(async (image) => {
-    const base64 = await fetchBase64(image.url).catch(console.error);
-
-    image.base64 = (base64) ? base64.pop() : null;
+    image.base64 = await fetchBase64(image.url);
   }));
 
   return res.json(images);

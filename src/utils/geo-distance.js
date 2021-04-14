@@ -1,3 +1,11 @@
+/**
+ * @param {number} lat1
+ * @param {number} long1
+ * @param {number} lat2
+ * @param {number} long2
+ *
+ * @returns {number}
+ */
 module.exports = (lat1, long1, lat2, long2) => {
   const theta = long1 - long2;
   const radLat1 = Math.PI * lat / 180;
