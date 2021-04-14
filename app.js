@@ -30,7 +30,9 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.get('/sights', async (req, res) => {
-  const { lat, long, radius } = req.query;
+  const lat = parseFloat(req.query.lat);
+  const long = parseFloat(req.query.long);
+  const radius = parseFloat(req.query.radius);
 
   let sights = await db
     .select('*')
@@ -39,6 +41,7 @@ app.get('/sights', async (req, res) => {
 
   /** Filter by radius if requested */
   if (lat && long && radius) {
+    console.log({lat, long, radius});
     sights = sights.filter((sight) => getGeoDistance(lat, long, sight.lat, sight.long) <= radius);
   }
 
