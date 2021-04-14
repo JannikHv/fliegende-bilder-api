@@ -9,7 +9,7 @@
 module.exports = (lat1, long1, lat2, long2) => {
   const theta = long1 - long2;
   const radLat1 = Math.PI * lat1 / 180;
-  const radLat2 = Math.PI = lat2 / 180;
+  const radLat2 = Math.PI * lat2 / 180;
   const radTheta = Math.PI * theta / 180;
 
   let dist = (
