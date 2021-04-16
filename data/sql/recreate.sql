@@ -18,5 +18,6 @@ CREATE TABLE `images` (
   `date` DATETIME,
   `sight_id` INT,
 
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`sight_id`) REFERENCES sights(`id`)
 );
