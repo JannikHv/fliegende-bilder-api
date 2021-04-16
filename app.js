@@ -5,7 +5,8 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
 
-const { getGeoDistance, fetchBase64 } = require('src/utils');
+const { getGeoDistance } = require('src/utils');
+const { databaseService } = require('src/services');
 
 const {
   PORT,
@@ -34,14 +35,10 @@ app.get('/sights', async (req, res) => {
   const long = parseFloat(req.query.long);
   const radius = parseFloat(req.query.radius);
 
-  let sights = await db
-    .select('*')
-    .from('sights')
-    .catch(() => []);
+  let sights = await databaseService.getSights();
 
   /** Filter by radius if requested */
   if (lat && long && radius) {
-    console.log({lat, long, radius});
     sights = sights.filter((sight) => getGeoDistance(lat, long, sight.lat, sight.long) <= radius);
   }
 
@@ -49,17 +46,9 @@ app.get('/sights', async (req, res) => {
 });
 
 app.get('/sights/:id/images', async (req, res) => {
-  const { id } = req.params;
+  const { id: sight_id } = req.params;
 
-  const images = await db
-    .select('*')
-    .from('images')
-    .where({ sight_id: id })
-    .catch(() => []);
-
-  await Promise.all(images.map(async (image) => {
-    image.base64 = await fetchBase64(image.url);
-  }));
+  const images = await databaseService.getImages({ sight_id });
 
   return res.json(images);
 });
