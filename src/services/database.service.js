@@ -6,7 +6,7 @@ const { fetchBase64 } = require('src/utils');
 
 class DatabaseService {
   /**
-   * @param {object} where
+   * @param {object} [where]
    *
    * @return {Promise<object[]>}
    */
@@ -19,7 +19,7 @@ class DatabaseService {
   }
 
   /**
-   * @param {object} where
+   * @param {object} [where]
    *
    * @return {Promise<object[]>}
    */

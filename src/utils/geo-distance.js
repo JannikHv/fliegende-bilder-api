@@ -4,6 +4,8 @@
  * @param {number} lat2
  * @param {number} long2
  *
+ * Returns distance in km
+ *
  * @returns {number}
  */
 module.exports = (lat1, long1, lat2, long2) => {
